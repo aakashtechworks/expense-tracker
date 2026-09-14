@@ -4,7 +4,7 @@ import Input from '../common/Input'
 import Button from '../common/Button'
 import { categories } from '../../constants/Categories'
 
-const TransactionForm = () => {
+const TransactionForm = ({addTransaction}) => {
     const initialFormdata = {
         title: "",
         amount: "",
@@ -87,11 +87,13 @@ const TransactionForm = () => {
         amount: Number(formData.amount)
       }
 
-      console.log(transaction)
+      addTransaction(transaction)
 
       setFormData(initialFormdata)
       setErrors({})
     }
+
+    
 
   return (
     <Card className='w-full max-w-2xl'>
