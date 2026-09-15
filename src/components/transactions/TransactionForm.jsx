@@ -3,8 +3,11 @@ import Card from '../common/Card'
 import Input from '../common/Input'
 import Button from '../common/Button'
 import { categories } from '../../constants/Categories'
+import { useContext } from 'react'
+import { TransactionContext } from '../../context/TransactionContext'
 
-const TransactionForm = ({addTransaction}) => {
+const TransactionForm = () => {
+    const {addTransaction} = useContext(TransactionContext)
     const initialFormdata = {
         title: "",
         amount: "",
@@ -91,6 +94,8 @@ const TransactionForm = ({addTransaction}) => {
 
       setFormData(initialFormdata)
       setErrors({})
+
+      console.log("added", transaction)
     }
 
     
