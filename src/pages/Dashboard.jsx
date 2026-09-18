@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
+import {formatCurrency} from '../utils/formatCurrency'
+
 
 import TransactionForm from '../components/transactions/TransactionForm'
 import TransactionList from '../components/transactions/TransactionList'
@@ -26,13 +28,43 @@ const Dashboard = () => {
     // return transaction.type === filterType
   })
 
+  const totalIncome = transactions.filter((transaction) => transaction.type === "income").reduce((total, transaction)=> total + transaction.amount, 0)
+
+  const totalExpense = transactions.filter((transaction) => transaction.type === "expense").reduce((total, transaction)=> total + transaction.amount, 0)
+
+  const totalBalance = totalIncome - totalExpense
+
+  const transactionCount = transactions.length
+
   
   return (
     <section className='mx-auto w-full max-w-7xl px-4 py-8'>
         <h1 className='text-3xl font-bold text-gray-800'>Expense Tracker Dashboard</h1>
 
+        <div className='my-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
+          <div className='rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg backdrop-blur-md'>
+            <p className='text-sm opacity-70'>Total Income</p>
+            <h2 className='mt-2 text-2xl font-bold text-emerald-400'>Rs. {formatCurrency(totalIncome)}</h2>
+          </div>
+
+          <div className='rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg backdrop-blur-md'>
+            <p className='text-sm opacity-70'>Total Expense</p>
+            <h2 className='mt-2 text-2xl font-bold text-red-400'>Rs. {formatCurrency(totalExpense)}</h2>
+          </div>
+
+          <div className='rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg backdrop-blur-md'>
+            <p className='text-sm opacity-70'>Total Balance</p>
+            <h2 className='mt-2 text-2xl font-bold '>Rs. {formatCurrency(totalBalance)}</h2>
+          </div>
+
+          <div className='rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg backdrop-blur-md'>
+            <p className='text-sm opacity-70'>Total Transactions</p>
+            <h2 className='mt-2 text-2xl font-bold '>{transactionCount}</h2>
+          </div>
+        </div>
+
         <div className='mt-6'>
-          <TransactionForm/>
+          <TransactionForm  />
               
           <div className='my-8 grid grid-cols-1 gap-4 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-md sm:grid-cols-2 lg:grid-cols-4'>
             <label htmlFor="" className='mb-2 block text-sm font-medium'>Filter by Type</label>
