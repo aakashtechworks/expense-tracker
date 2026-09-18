@@ -4,9 +4,9 @@ const TransactionList = ({transactions, deleteTransaction,}) => {
     
     if(transactions.length === 0) {
         return (
-            <div>
-                <h2>No transactions yet</h2>
-                <p>Add your first transaction to get started!</p>
+            <div className='rounded-xl border border-white/20 bg-white/10 p-8 text-center shadow-lg backdrop-blur-md'>
+                <h2 className='text-xl font-semibold'>No transactions yet</h2>
+                <p className='mt-2 text-sm opacity-70'>Add your first transaction to get started!</p>
             </div>
         )
     }

@@ -7,31 +7,25 @@ import { TransactionContext } from '../context/TransactionContext'
 
 const Dashboard = () => {
   const { transactions, deleteTransaction } = useContext(TransactionContext)
-  // const [transactions, settransactions] = useState(()=>{
-  //   try {const savedTransactions = localStorage.getItem("transactions")
+  const [filterType, setFilterType] = useState("all")
+  const [filterCategory, setFilterCategory] = useState("all")
+  const [filterDate, setFilterDate] = useState("")
+  
 
-  //   return savedTransactions ? JSON.parse(savedTransactions) : []
-  //   } catch (error) {
-  //     return []
-  //   }
-  // })
+  const filteredTransactions = transactions.filter((transaction) => {
+    const typeMatch = filterType === "all" || transaction.type === filterType
 
-  // const addTransaction = (transaction) => {
-  //     settransactions((prevTransactions)=>[
-  //       ...prevTransactions,
-  //       transaction,
-  //     ])
-  // }
+    const categoryMatch = filterCategory === "all" || transaction.category === filterCategory
 
-  // useEffect(() => {
-  //   localStorage.setItem("transactions", JSON.stringify(transactions))
-  // }, [transactions])
+    const dateMatch = !filterDate || transaction.date === filterDate
 
-  // const deleteTransaction = (id) => {
-  //   settransactions((prevTransactions) => prevTransactions.filter(
-  //     (transaction) => transaction.id !== id
-  //   ))
-  // }
+    return typeMatch && categoryMatch && dateMatch
+    // if(filterType === "all"){
+    //   return true
+    // }
+    // return transaction.type === filterType
+  })
+
   
   return (
     <section className='mx-auto w-full max-w-7xl px-4 py-8'>
@@ -39,8 +33,42 @@ const Dashboard = () => {
 
         <div className='mt-6'>
           <TransactionForm/>
+              
+          <div className='my-8 grid grid-cols-1 gap-4 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-md sm:grid-cols-2 lg:grid-cols-4'>
+            <label htmlFor="" className='mb-2 block text-sm font-medium'>Filter by Type</label>
 
-          <TransactionList transactions={transactions} deleteTransaction={deleteTransaction} />
+            <select name="" id="" value={filterType} onChange={(event) => setFilterType(event.target.value)} className='rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm outline-none backdrop-blur-md'>
+              <option value="all">All</option>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
+            <select name="" id="" value={filterCategory} onChange={(event) => setFilterCategory(event.target.value)} className='rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm outline-none backdrop-blur-md'>
+              <option value="all">All</option>
+              {[...new Set(transactions.map((transaction)=>
+              transaction.category))].map(
+                (category)=> (
+                  <option value={category} key={category}>
+                    {category}
+                  </option>
+                )
+              )}
+
+            </select>
+            <div>
+              <label htmlFor="" className='mb-2 block text-sm font-medium'>Filter by Date</label>
+              <input type="date" value={filterDate} onChange={(event)=>setFilterDate(event.target.value)} className='rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm outline-none backdrop-blur-md'/>
+            </div>
+            <button
+              type='button' onClick={()=>{
+                setFilterType("all")
+                setFilterCategory("all")
+                setFilterDate("")
+              }} className='rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 px-5 py-3 text-sm font-semibold text-white transition duration-300 hover:scale-105'>
+              Clear Filters
+            </button>
+          </div>
+          
+          <TransactionList transactions={filteredTransactions} deleteTransaction={deleteTransaction} />
         </div>
     </section>
   )
