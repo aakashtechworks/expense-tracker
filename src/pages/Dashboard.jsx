@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import {formatCurrency} from '../utils/formatCurrency'
-
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 
 import TransactionForm from '../components/transactions/TransactionForm'
 import TransactionList from '../components/transactions/TransactionList'
@@ -36,6 +36,51 @@ const Dashboard = () => {
 
   const transactionCount = transactions.length
 
+  const charData = [
+    {
+      name: "Income",
+      amount: totalIncome,
+    },
+    {
+      name: "Expense",
+      amount: totalExpense,
+    },
+  ]
+
+  const expenseTransaction = transactions.filter(
+    (transaction) => transaction.type === "expense"
+  )
+
+  const categoryTotals = expenseTransaction.reduce((acc, transaction) => {
+    const category = transaction.category
+
+    acc[category] = (acc[category] || 0) + transaction.amount
+
+    return acc
+  },{})
+
+  const categoryExpenseData = Object.entries(categoryTotals).map(([name, amount])=> ({
+    name,
+    amount
+  }))
+
+  const incomeTransaction = transactions.filter(
+    (transaction) => transaction.type === "income"
+  )
+
+  const incomeCategoryTotals = incomeTransaction.reduce((acc, transaction) => {
+    const category = transaction.category
+
+    acc[category] = (acc[category] || 0) + transaction.amount
+
+    return acc
+  },{})
+
+  const incomeCategoryData = Object.entries(incomeCategoryTotals).map(([name, amount])=> ({
+    name,
+    amount
+  }))
+
   
   return (
     <section className='mx-auto w-full max-w-7xl px-4 py-8'>
@@ -62,6 +107,53 @@ const Dashboard = () => {
             <h2 className='mt-2 text-2xl font-bold '>{transactionCount}</h2>
           </div>
         </div>
+
+        <div className='mb-8 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-md'>
+            <h2 className='mb-5 text-xl font-semibold'>Income Vs Expense</h2>
+
+            <div className='h-80 w-full'>
+              <ResponsiveContainer width="100%" height="100%" >
+                <BarChart data={charData}>
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip formatter={(value) => `Rs.${value}`}/>
+                  <Bar dataKey="amount" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div className='mb-8 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-md'>
+            <h2 className='mb-5 text-xl font-semibold'>Income by Category</h2>
+
+            <div className='h-80 w-full'>
+              <ResponsiveContainer width="100%" height="100%" >
+                <BarChart data={incomeCategoryData}>
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip formatter={(value) => `${value}`} />
+                  <Bar dataKey="amount" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div className='mb-8 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-md'>
+            <h2 className='mb-5 text-xl font-semibold'>Expense by Category</h2>
+
+            <div className='h-80 w-full'>
+              <ResponsiveContainer width="100%" height="100%" >
+                <BarChart data={categoryExpenseData}>
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip formatter={(value) => `${value}`} />
+                  <Bar dataKey="amount" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          
 
         <div className='mt-6'>
           <TransactionForm  />
@@ -99,6 +191,8 @@ const Dashboard = () => {
               Clear Filters
             </button>
           </div>
+
+          
           
           <TransactionList transactions={filteredTransactions} deleteTransaction={deleteTransaction} />
         </div>
