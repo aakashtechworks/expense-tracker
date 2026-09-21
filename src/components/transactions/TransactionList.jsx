@@ -30,7 +30,7 @@ const TransactionList = ({transactions, deleteTransaction,}) => {
                     <span className='text-sm capitalize opacity-70'>{transaction.type}</span>
 
                     <button type='button'
-                    onClick={() => deleteTransaction(transaction.id)} className='mt-2 text-sm font-medium text-red-400 transition hover:scale-105'>
+                    onClick={() => deleteTransaction(transaction.id)} className='mt-2 text-sm font-medium px-3 py-2 lg:py-1 bg-red-500 text-white rounded-2xl transition hover:scale-105'>
                         Delete
                     </button>
                 </div>
