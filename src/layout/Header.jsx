@@ -8,7 +8,7 @@ const Header = () => {
         isActive ? "after:absolute after:bottom-0 after:left-0 after:h-0.5 after:w-full after:bg-white" : "hover:text-white/80"
     }`
   return (
-    <header className='bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white shadow-lg'>
+    <header className='bg-gradient-to-r from-slate-950 via-purple-900 to-slate-950 text-white shadow-lg'>
         <div className='mx-auto flex max-w-7xl items-center justify-between px-4 py-4'>
             <h1 className='text-xl font-bold'>Expense Tracker</h1>
 

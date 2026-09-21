@@ -15,11 +15,11 @@ const TransactionList = ({transactions, deleteTransaction,}) => {
 
   return (
     <div>
-        <h2>Transactions</h2>
+        <h2 className='text-xl font-bold text-white mb-8'>Transactions</h2>
 
         {
             transactions.map((transaction)=>(
-                <div key={transaction.id} className='mb-4 flex flex-col gap-4 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-md transition duration-300 hover:scale-105 sm:flex-row sm:items-center sm:justify-between'>
+                <div key={transaction.id} className='mb-4 flex flex-col gap-4 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-md transition duration-300 hover:scale-102 sm:flex-row sm:items-center sm:justify-between'>
                     <h3 className='text-lg font-semibold'>{transaction.title}</h3>
                     <p className='mt-1 text-sm opacity-70'>{transaction.category} . {transaction.date}</p>
                     <div className='text-left sm:text-right'>

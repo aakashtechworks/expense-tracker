@@ -3,30 +3,34 @@ import {formatCurrency} from '../utils/formatCurrency'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
 
 import TransactionForm from '../components/transactions/TransactionForm'
-import TransactionList from '../components/transactions/TransactionList'
+// import TransactionList from '../components/transactions/TransactionList'
 import { TransactionContext } from '../context/TransactionContext'
 
 
 const Dashboard = () => {
   const { transactions, deleteTransaction } = useContext(TransactionContext)
-  const [filterType, setFilterType] = useState("all")
-  const [filterCategory, setFilterCategory] = useState("all")
-  const [filterDate, setFilterDate] = useState("")
+  // const [filterType, setFilterType] = useState("all")
+  // const [filterCategory, setFilterCategory] = useState("all")
+  // const [filterDate, setFilterDate] = useState("")
   
 
-  const filteredTransactions = transactions.filter((transaction) => {
-    const typeMatch = filterType === "all" || transaction.type === filterType
+  // const filteredTransactions = transactions.filter((transaction) => {
+  //   const typeMatch = filterType === "all" || transaction.type === filterType
 
-    const categoryMatch = filterCategory === "all" || transaction.category === filterCategory
+  //   const categoryMatch = filterCategory === "all" || transaction.category === filterCategory
 
-    const dateMatch = !filterDate || transaction.date === filterDate
+  //   const dateMatch = !filterDate || transaction.date === filterDate
 
-    return typeMatch && categoryMatch && dateMatch
-    // if(filterType === "all"){
-    //   return true
-    // }
-    // return transaction.type === filterType
-  })
+  //   return typeMatch && categoryMatch && dateMatch
+    
+  // })
+
+
+
+
+
+
+
 
   const totalIncome = transactions.filter((transaction) => transaction.type === "income").reduce((total, transaction)=> total + transaction.amount, 0)
 
@@ -36,55 +40,14 @@ const Dashboard = () => {
 
   const transactionCount = transactions.length
 
-  const charData = [
-    {
-      name: "Income",
-      amount: totalIncome,
-    },
-    {
-      name: "Expense",
-      amount: totalExpense,
-    },
-  ]
+  
 
-  const expenseTransaction = transactions.filter(
-    (transaction) => transaction.type === "expense"
-  )
-
-  const categoryTotals = expenseTransaction.reduce((acc, transaction) => {
-    const category = transaction.category
-
-    acc[category] = (acc[category] || 0) + transaction.amount
-
-    return acc
-  },{})
-
-  const categoryExpenseData = Object.entries(categoryTotals).map(([name, amount])=> ({
-    name,
-    amount
-  }))
-
-  const incomeTransaction = transactions.filter(
-    (transaction) => transaction.type === "income"
-  )
-
-  const incomeCategoryTotals = incomeTransaction.reduce((acc, transaction) => {
-    const category = transaction.category
-
-    acc[category] = (acc[category] || 0) + transaction.amount
-
-    return acc
-  },{})
-
-  const incomeCategoryData = Object.entries(incomeCategoryTotals).map(([name, amount])=> ({
-    name,
-    amount
-  }))
 
   
   return (
-    <section className='mx-auto w-full max-w-7xl px-4 py-8'>
-        <h1 className='text-3xl font-bold text-gray-800'>Expense Tracker Dashboard</h1>
+    <main className='min-h-screen bg-gradient-to-r from-slate-950 via-purple-950 to-slate-950 text-white'>
+      <section className='mx-auto w-full max-w-7xl px-4 py-8'>
+        <h1 className='text-3xl font-bold text-white'>Expense Tracker Dashboard</h1>
 
         <div className='my-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4'>
           <div className='rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg backdrop-blur-md'>
@@ -99,104 +62,22 @@ const Dashboard = () => {
 
           <div className='rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg backdrop-blur-md'>
             <p className='text-sm opacity-70'>Total Balance</p>
-            <h2 className='mt-2 text-2xl font-bold '>Rs. {formatCurrency(totalBalance)}</h2>
+            <h2 className='mt-2 text-2xl font-bold text-blue-400 '>Rs. {formatCurrency(totalBalance)}</h2>
           </div>
 
           <div className='rounded-2xl border border-white/20 bg-white/10 p-6 shadow-lg backdrop-blur-md'>
             <p className='text-sm opacity-70'>Total Transactions</p>
-            <h2 className='mt-2 text-2xl font-bold '>{transactionCount}</h2>
+            <h2 className='mt-2 text-2xl font-bold text-purple-500 '>{transactionCount}</h2>
           </div>
         </div>
-
-        <div className='mb-8 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-md'>
-            <h2 className='mb-5 text-xl font-semibold'>Income Vs Expense</h2>
-
-            <div className='h-80 w-full'>
-              <ResponsiveContainer width="100%" height="100%" >
-                <BarChart data={charData}>
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip formatter={(value) => `Rs.${value}`}/>
-                  <Bar dataKey="amount" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          <div className='mb-8 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-md'>
-            <h2 className='mb-5 text-xl font-semibold'>Income by Category</h2>
-
-            <div className='h-80 w-full'>
-              <ResponsiveContainer width="100%" height="100%" >
-                <BarChart data={incomeCategoryData}>
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip formatter={(value) => `${value}`} />
-                  <Bar dataKey="amount" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          <div className='mb-8 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-md'>
-            <h2 className='mb-5 text-xl font-semibold'>Expense by Category</h2>
-
-            <div className='h-80 w-full'>
-              <ResponsiveContainer width="100%" height="100%" >
-                <BarChart data={categoryExpenseData}>
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip formatter={(value) => `${value}`} />
-                  <Bar dataKey="amount" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          
 
         <div className='mt-6'>
           <TransactionForm  />
-              
-          <div className='my-8 grid grid-cols-1 gap-4 rounded-2xl border border-white/20 bg-white/10 p-5 shadow-lg backdrop-blur-md sm:grid-cols-2 lg:grid-cols-4'>
-            <label htmlFor="" className='mb-2 block text-sm font-medium'>Filter by Type</label>
-
-            <select name="" id="" value={filterType} onChange={(event) => setFilterType(event.target.value)} className='rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm outline-none backdrop-blur-md'>
-              <option value="all">All</option>
-              <option value="income">Income</option>
-              <option value="expense">Expense</option>
-            </select>
-            <select name="" id="" value={filterCategory} onChange={(event) => setFilterCategory(event.target.value)} className='rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm outline-none backdrop-blur-md'>
-              <option value="all">All</option>
-              {[...new Set(transactions.map((transaction)=>
-              transaction.category))].map(
-                (category)=> (
-                  <option value={category} key={category}>
-                    {category}
-                  </option>
-                )
-              )}
-
-            </select>
-            <div>
-              <label htmlFor="" className='mb-2 block text-sm font-medium'>Filter by Date</label>
-              <input type="date" value={filterDate} onChange={(event)=>setFilterDate(event.target.value)} className='rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm outline-none backdrop-blur-md'/>
-            </div>
-            <button
-              type='button' onClick={()=>{
-                setFilterType("all")
-                setFilterCategory("all")
-                setFilterDate("")
-              }} className='rounded-xl bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 px-5 py-3 text-sm font-semibold text-white transition duration-300 hover:scale-105'>
-              Clear Filters
-            </button>
-          </div>
-
-          
-          
-          <TransactionList transactions={filteredTransactions} deleteTransaction={deleteTransaction} />
         </div>
     </section>
+      
+    </main>
+    
   )
 }
 

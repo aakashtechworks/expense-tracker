@@ -101,10 +101,10 @@ const TransactionForm = () => {
     
 
   return (
-    <Card className='w-full max-w-2xl'>
-        <h2 className='text-2xl font-bold text-gray-800'>Add Transaction</h2>
+    <Card className='w-full bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 text-black'>
+        <h2 className='text-2xl font-bold text-white'>Add Transaction</h2>
 
-        <form onSubmit={handleSubmit} className='mt-6 flex flex-col gap-4'>
+        <form onSubmit={handleSubmit} className='mt-6 flex flex-col gap-4 font-bold'>
             <Input name="title" value={formData.title} onChange={handleChange} placeholder="Enter transaction title" />
             {
                 errors.title && (
