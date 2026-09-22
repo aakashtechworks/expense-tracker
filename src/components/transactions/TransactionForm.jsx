@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Card from '../common/Card'
 import Input from '../common/Input'
 import Button from '../common/Button'
-import { categories } from '../../constants/Categories'
+import { categories } from '../../constants/categories'
 import { useContext } from 'react'
 import { TransactionContext } from '../../context/TransactionContext'
 
